@@ -1,15 +1,19 @@
 import java.util.Scanner;
 
 public class StepTracker {
+    int target, months = 12, days = 30;
     Scanner scanner = new Scanner(System.in);
-    int[][] stepsTable = new int[12][30];
-    int target = 10000;
+    int[][] stepsTable = new int[months][days];
+
+    StepTracker(int startTarget) {
+        target = startTarget;
+    }
 
     void changeTarget() {
         System.out.print("Введите новую цель: ");
         int newTarget = scanner.nextInt();
         if (newTarget < 0) {
-            System.out.println("Неверная команда!");
+            error();
             return;
         }
         target = newTarget;
@@ -18,21 +22,18 @@ public class StepTracker {
     void addSteps() {
         printMonth();
         int monthInput = scanner.nextInt();
-        if (monthInput < 1 || monthInput > 12) {
-            System.out.println("Неверная команда!");
+        if (checkMonth(monthInput) == 1)
             return;
-        }
-        System.out.println("Введите число месяца от 1 до 30");
-        System.out.print("День: ");
+        System.out.print("Введите число месяца от 1 до 30\nДень: ");
         int dayInput = scanner.nextInt();
-        if (dayInput < 1 || dayInput > 30) {
-            System.out.println("Неверная команда!");
+        if (dayInput < 1 || dayInput > days) {
+            error();
             return;
         }
         System.out.print("Введите кол-во шагов: ");
         int steps = scanner.nextInt();
         if (steps < 0) {
-            System.out.println("Неверная команда!");
+            error();
             return;
         }
         stepsTable[monthInput - 1][dayInput - 1] = steps;
@@ -42,16 +43,14 @@ public class StepTracker {
         printMonth();
         Converter converter = new Converter();
         int monthInput = scanner.nextInt();
-        if (monthInput < 1 || monthInput > 12) {
-            System.out.println("Неверная команда!");
+        if (checkMonth(monthInput) == 1)
             return;
-        }
-        for (int j = 0; j < 30; j++) {
+        for (int j = 0; j < days; j++) {
             System.out.println("День " + (j + 1) + ": " + stepsTable[monthInput - 1][j]);
         }
         System.out.println("Всего за месяц: " + stepsSum(monthInput));
         System.out.println("Максимально за месяц: " + stepsMax(monthInput));
-        System.out.println(("Среднее за день: " + stepsSum(monthInput) / 30));
+        System.out.println(("Среднее за день: " + stepsSum(monthInput) / days));
         System.out.println("Пройденная дистанция: " + converter.getLength(stepsSum(monthInput)) + " км");
         System.out.println("Сожжжено " + converter.getCalories(stepsSum(monthInput)) + " килокалорий");
         System.out.println("Лучшая серия: " + maxLongSeries(monthInput));
@@ -60,7 +59,7 @@ public class StepTracker {
     int maxLongSeries(int mouth) {
         int series = 0;
         int maxLong = series;
-        for (int j = 0; j < 30; j++) {
+        for (int j = 0; j < days; j++) {
             if (stepsTable[mouth - 1][j] >= target) {
                 if (series == 0 || stepsTable[mouth - 1][j - 1] >= target)
                     series++;
@@ -75,18 +74,30 @@ public class StepTracker {
 
     int stepsSum(int month) {
         int sum = 0;
-        for (int j = 0; j < 30; j++)
+        for (int j = 0; j < days; j++)
             sum = sum + stepsTable[month - 1][j];
         return sum;
     }
 
     int stepsMax(int month) {
         int max = stepsTable[month - 1][0];
-        for (int j = 0; j < 30; j++) {
+        for (int j = 0; j < days; j++) {
             if (stepsTable[month - 1][j] > max)
                 max = stepsTable[month - 1][j];
         }
         return max;
+    }
+
+    void error() {
+        System.out.println("Неверная команда!");
+    }
+
+    int checkMonth(int monthInput) {
+        if (monthInput < 1 || monthInput > months) {
+            error();
+            return 1;
+        }
+        return 0;
     }
 
     void printMonth() {

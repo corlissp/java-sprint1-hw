@@ -1,10 +1,12 @@
 public class Converter {
     double getLength(int steps) {
-        double kilometers = (steps * 0.75) / 1000;
+        double metersByStep = 0.75;
+        double kilometers = (steps * metersByStep) / 1000;
         return kilometers;
     }
     double getCalories(int steps) {
-        double kilocalories = (steps * 50) / 1000;
+        double caloriesByStep = 50;
+        double kilocalories = (steps * caloriesByStep) / 1000;
         return kilocalories;
     }
 }

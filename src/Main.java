@@ -3,9 +3,10 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+        int startTarget = 10000;
         Scanner scanner = new Scanner(System.in);
         printMenu();
-        StepTracker stepTracker = new StepTracker();
+        StepTracker stepTracker = new StepTracker(startTarget);
         int userInput = scanner.nextInt();
         while (userInput != 4) {
             if (userInput == 1) {
