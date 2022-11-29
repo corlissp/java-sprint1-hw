@@ -1,12 +1,16 @@
 import java.util.Scanner;
 
 public class StepTracker {
-    int target, months = 12, days = 30;
-    Scanner scanner = new Scanner(System.in);
-    int[][] stepsTable = new int[months][days];
+    int target, months, days;
+    Scanner scanner;
+    int[][] stepsTable;
 
     StepTracker(int startTarget) {
         target = startTarget;
+        months = 12;
+        days = 30;
+        stepsTable = new int[months][days];
+        scanner = new Scanner(System.in);
     }
 
     void changeTarget() {
